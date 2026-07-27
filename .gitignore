@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.env.local
+.env.*.local
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.mypy_cache/
+.ruff_cache/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.log
+logs/
+data/local/
+backups/
+
+
+# Personal data (no commitear)
+reporte_francisco.pdf
+reporte_francisco.html
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+*.log
+data/IPC*.csv
+data/*.xlsx
+reporte_francisco_oficial.html
