@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcula tu Pensión en Colombia 2026 | Datos Oficiales Banrep + SuperFinanciera</title>
+    <meta name="description" content="Calcula tu pensión en Colombia en 60 segundos. Comparador neutral RPM vs RAIS con datos oficiales del Banrep y SuperFinanciera. Ley 797/2003 + Decreto 2392/2018.">
+    <meta name="keywords" content="calcular pensión colombia, pensión colpensiones, pensión afp porvenir protección, comparar régimen pensional colombia, simulador pensión colombia, ley 797 2003, carta circular 39 2026">
+    <meta name="author" content="Andrés Giraldo">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Calcula tu Pensión en Colombia 2026 - Comparador Neutral RPM vs RAIS">
+    <meta property="og:description" content="Calcula tu pensión estimada con datos oficiales. Único comparador neutral RPM vs RAIS en Colombia.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pension-calculator-col.netlify.app">
+    <meta property="og:image" content="https://pension-calculator-col.netlify.app/og-image.png">
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Fonts: Inter + Space Grotesk (futurista) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <style>
+        :root {
+            --color-bg: #0a0e1a;
+            --color-bg-2: #0f1729;
+            --color-accent: #6366f1;
+            --color-accent-2: #06b6d4;
+            --color-accent-3: #a855f7;
+        }
+
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--color-bg);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Animated background grid */
+        .grid-bg {
+            background-image:
+                linear-gradient(rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        /* Glow effect on hero */
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .glow-1 {
+            background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: glow-pulse 8s ease-in-out infinite;
+        }
+
+        .glow-2 {
+            background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
+            top: 200px;
+            right: -100px;
+            opacity: 0.3;
+            animation: glow-pulse 10s ease-in-out infinite 2s;
+        }
+
+        .glow-3 {
+            background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+            top: 100px;
+            left: -100px;
+            opacity: 0.25;
+            animation: glow-pulse 12s ease-in-out infinite 4s;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* CTA button with glow */
+        .btn-glow {
+            position: relative;
+            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #6366f1, #06b6d4, #a855f7, #6366f1);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            filter: blur(15px);
+            transition: opacity 0.3s;
+        }
+
+        .btn-glow:hover::before {
+            opacity: 0.7;
+        }
+
+        /* Glass card */
+        .glass-card {
+            background: rgba(15, 23, 41, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Premium card with animated border */
+        .premium-card {
+            position: relative;
+            background: rgba(15, 23, 41, 0.8);
+            backdrop-filter: blur(12px);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            transition: all 0.3s ease;
+        }
+
+        .premium-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(135deg, #6366f1, #06b6d4, #a855f7);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: border-rotate 4s linear infinite;
+        }
+
+        @keyframes border-rotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* Fade in on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger children */
+        .stagger > * {
+            transition-delay: var(--delay, 0ms);
+        }
+
+        /* Floating badge */
+        .badge-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* Code-like mono accents */
+        .mono-accent {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+            color: #06b6d4;
+            padding: 0.1em 0.4em;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 4px;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #6366f1, #06b6d4);
+            border-radius: 5px;
+        }
+
+        /* Nav link hover */
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #6366f1, #06b6d4);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Step number */
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        /* Avatar gradient */
+        .avatar-grad {
+            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 50%, #a855f7 100%);
+            position: relative;
+        }
+
+        .avatar-grad::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: linear-gradient(135deg, #6366f1, #06b6d4, #a855f7);
+            border-radius: inherit;
+            z-index: -1;
+            filter: blur(12px);
+            opacity: 0.6;
+            animation: avatar-pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes avatar-pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Sector chip */
+        .sector-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            color: #c7d2fe;
+            transition: all 0.3s;
+        }
+
+        .sector-chip:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+        }
+    </style>
+</head>
+<body class="grid-bg">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 backdrop-blur-xl bg-[#0a0e1a]/80 border-b border-slate-800/50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 via-cyan-500 to-purple-500 flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">P</span>
+                    </div>
+                    <span class="font-display text-lg font-bold text-white">Pension<span class="text-cyan-400">Calculator</span></span>
+                    <span class="font-mono text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/30">v1.0</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#como-funciona" class="nav-link text-sm text-slate-300 hover:text-white transition">Cómo funciona</a>
+                    <a href="#pricing" class="nav-link text-sm text-slate-300 hover:text-white transition">Precios</a>
+                    <a href="#metodologia" class="nav-link text-sm text-slate-300 hover:text-white transition">Metodología</a>
+                    <a href="/calculadora" class="font-mono text-sm bg-slate-800/50 border border-slate-700 text-slate-200 px-3 py-1.5 rounded hover:border-indigo-500 hover:text-white transition">→ /api</a>
+                </div>
+                <a href="/calculadora" class="btn-glow text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                    Calcular gratis
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="relative pt-20 pb-32 overflow-hidden">
+        <div class="hero-glow glow-1"></div>
+        <div class="hero-glow glow-2"></div>
+        <div class="hero-glow glow-3"></div>
+
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="fade-in inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30">
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="font-mono text-xs text-indigo-200">API live · pension-calc-co.fly.dev</span>
+            </div>
+
+            <h1 class="fade-in font-display text-5xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
+                <span class="gradient-text">¿Cuánto vas a recibir</span>
+                <br>
+                <span class="text-white">de pensión?</span>
+            </h1>
+
+            <p class="fade-in text-xl sm:text-2xl mb-3 text-slate-200">
+                Calcula tu pensión en Colombia en 60 segundos.
+            </p>
+            <p class="fade-in text-base sm:text-lg mb-10 text-slate-400 max-w-2xl mx-auto">
+                Comparador neutral <span class="mono-accent">RPM vs RAIS</span> con datos oficiales del
+                <span class="mono-accent">Banrep</span> y <span class="mono-accent">SuperFinanciera</span>.
+            </p>
+
+            <div class="fade-in flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                <a href="/calculadora" class="btn-glow text-white px-8 py-4 rounded-xl text-lg font-bold">
+                    Calcular mi pensión gratis →
+                </a>
+                <a href="#pricing" class="font-mono text-sm bg-slate-800/40 backdrop-blur text-slate-300 px-6 py-3 rounded-xl border border-slate-700 hover:border-indigo-500 hover:text-white transition">
+                    Ver planes premium
+                </a>
+            </div>
+
+            <p class="font-mono text-xs text-slate-500">
+                // sin registro · sin tarjeta · datos protegidos
+            </p>
+        </div>
+    </section>
+
+    <!-- Trust bar -->
+    <section class="relative py-8 border-y border-slate-800/50 bg-[#0f1729]/40 backdrop-blur">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="font-mono text-xs text-slate-500 text-center mb-4 tracking-wider">[ DATOS_OFICIALES_VERIFICADOS ]</p>
+            <div class="flex flex-wrap justify-center items-center gap-x-10 gap-y-3 text-slate-300 font-medium text-sm">
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    Ley 797/2003
+                </span>
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    Decreto 2392/2018
+                </span>
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    Carta Circular 39/2026
+                </span>
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    IPC Banrep 1954–2026
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cómo funciona -->
+    <section id="como-funciona" class="py-24 relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="font-mono text-xs text-indigo-400 mb-2">[ WORKFLOW ]</p>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mb-4">Cómo funciona</h2>
+                <p class="text-slate-400 text-lg">3 pasos simples, sin registro</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl p-8 fade-in">
+                    <div class="step-num text-5xl font-bold mb-4">01</div>
+                    <h3 class="font-display text-xl font-bold mb-2 text-white">Ingresa tus datos básicos</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Fecha de nacimiento, sexo, semanas cotizadas. Sin registro, sin tarjeta.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-8 fade-in" style="--delay: 100ms">
+                    <div class="step-num text-5xl font-bold mb-4">02</div>
+                    <h3 class="font-display text-xl font-bold mb-2 text-white">Sube tu historia laboral</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Periodos cotizados con IBC y fechas. Mejora la precisión del IBL con indexación IPC del Banrep.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-8 fade-in" style="--delay: 200ms">
+                    <div class="step-num text-5xl font-bold mb-4">03</div>
+                    <h3 class="font-display text-xl font-bold mb-2 text-white">Recibe tu proyección</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Pensión RPM gratis. Comparación RPM vs RAIS + proyecciones a 5-10-15-20 años en versión premium.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Por qué nosotros -->
+    <section class="py-24 relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="font-mono text-xs text-indigo-400 mb-2">[ DIFERENCIADORES ]</p>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mb-4">¿Por qué pension-calculator.co?</h2>
+                <p class="text-slate-400 text-lg">El único comparador neutral de pensiones en Colombia</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+                <div class="glass-card rounded-xl p-6 flex gap-4 fade-in">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold mb-1 text-white">Comparación neutral</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Colpensiones solo calcula RPM. Las AFPs solo muestran su fondo. Nadie te da la comparación honesta. Nosotros sí.</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl p-6 flex gap-4 fade-in" style="--delay: 50ms">
+                    <div class="w-10 h-10 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold mb-1 text-white">Datos oficiales verificados</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">IPC del Banrep, rentabilidades por AFP de la SuperFinanciera (Carta Circular 39/2026). Cada número es trazable.</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl p-6 flex gap-4 fade-in" style="--delay: 100ms">
+                    <div class="w-10 h-10 rounded-lg bg-purple-500/20 border border-purple-500/40 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold mb-1 text-white">Código abierto</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Puedes auditar la metodología en github.com/AndresGM7/pension-calculator-col. Sin caja negra.</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl p-6 flex gap-4 fade-in" style="--delay: 150ms">
+                    <div class="w-10 h-10 rounded-lg bg-pink-500/20 border border-pink-500/40 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold mb-1 text-white">Proyecciones a 5-10-15-20 años</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Ve cómo evoluciona tu pensión bajo 3 escenarios macroeconómicos (Conservador, Base, Agresivo).</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl p-6 flex gap-4 fade-in" style="--delay: 200ms">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold mb-1 text-white">Sin conflictos de interés</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">No estamos afiliados a ninguna AFP ni entidad financiera. Nuestra única motivación es cobrarte una calculadora justa.</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl p-6 flex gap-4 fade-in" style="--delay: 250ms">
+                    <div class="w-10 h-10 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold mb-1 text-white">Privacidad primero</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Tus datos no se guardan por defecto. Cálculo anónimo, no requiere email ni teléfono.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-24 relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="font-mono text-xs text-indigo-400 mb-2">[ PRICING ]</p>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mb-4">Planes simples</h2>
+                <p class="text-slate-400 text-lg">Empieza gratis. Paga solo cuando quieras proyecciones avanzadas.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+
+                <!-- Free -->
+                <div class="glass-card rounded-2xl p-8 fade-in">
+                    <p class="font-mono text-xs text-slate-500 mb-2">TIER 01 · FREE</p>
+                    <h3 class="font-display text-3xl font-bold text-white mb-2">Gratis</h3>
+                    <div class="flex items-baseline mb-4">
+                        <span class="font-display text-5xl font-extrabold text-white">$0</span>
+                        <span class="text-slate-500 ml-2 font-mono text-sm">/ siempre</span>
+                    </div>
+                    <p class="text-slate-400 mb-6 text-sm">Para conocer tu pensión estimada básica con la normativa vigente.</p>
+                    <a href="/calculadora" class="block w-full bg-slate-800/50 border border-slate-700 text-slate-200 px-6 py-3 rounded-lg text-center font-medium hover:bg-slate-800 hover:border-indigo-500 hover:text-white transition mb-6">
+                        Empezar gratis →
+                    </a>
+                    <p class="font-mono text-xs text-slate-500 mb-3">// incluye:</p>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Cálculo RPM (Colpensiones)
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Ver IBL, tasa de reemplazo
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Piso legal 1 SMLMV aplicado
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Tope legal 25 SMLMV aplicado
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-500">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                            Sin comparación RPM vs RAIS
+                        </li>
+                        <li class="flex items-start gap-2 text-slate-500">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                            Sin proyecciones multi-escenario
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Premium -->
+                <div class="premium-card rounded-2xl p-8 fade-in md:scale-105 relative" style="--delay: 100ms">
+                    <div class="badge-float absolute -top-3 left-1/2 transform -translate-x-1/2">
+                        <span class="font-mono text-xs bg-gradient-to-r from-cyan-400 to-indigo-400 text-slate-900 px-3 py-1 rounded-full font-bold">
+                            ★ MÁS POPULAR
+                        </span>
+                    </div>
+                    <p class="font-mono text-xs text-cyan-300 mb-2">TIER 02 · PREMIUM</p>
+                    <h3 class="font-display text-3xl font-bold text-white mb-2">Premium</h3>
+                    <div class="flex items-baseline mb-4">
+                        <span class="font-display text-5xl font-extrabold gradient-text">$5</span>
+                        <span class="text-slate-400 ml-2 font-mono text-sm">USD · one-time</span>
+                    </div>
+                    <p class="text-slate-300 mb-6 text-sm">Para tomar una decisión informada sobre tu régimen.</p>
+                    <a href="/checkout/premium" class="block w-full btn-glow text-white px-6 py-3 rounded-lg text-center font-bold mb-6">
+                        Comprar reporte premium →
+                    </a>
+                    <p class="font-mono text-xs text-cyan-300 mb-3">// todo lo de gratis +</p>
+                    <ul class="space-y-3 text-sm text-slate-200">
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Comparación RPM vs RAIS (3 escenarios)
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Proyecciones a 5-10-15-20 años
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            PDF completo (15+ páginas)
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Tabla de mortalidad detallada
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Pago único, sin suscripción
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Pro -->
+                <div class="glass-card rounded-2xl p-8 fade-in" style="--delay: 200ms">
+                    <p class="font-mono text-xs text-purple-300 mb-2">TIER 03 · PRO</p>
+                    <h3 class="font-display text-3xl font-bold text-white mb-2">Pro</h3>
+                    <div class="flex items-baseline mb-4">
+                        <span class="font-display text-5xl font-extrabold text-white">$15</span>
+                        <span class="text-slate-500 ml-2 font-mono text-sm">USD / mes</span>
+                    </div>
+                    <p class="text-slate-400 mb-6 text-sm">Para contadores y planificadores financieros personales.</p>
+                    <a href="/checkout/pro" class="block w-full bg-slate-800/50 border border-slate-700 text-slate-200 px-6 py-3 rounded-lg text-center font-medium hover:bg-slate-800 hover:border-purple-500 hover:text-white transition mb-6">
+                        Empezar Pro →
+                    </a>
+                    <p class="font-mono text-xs text-purple-300 mb-3">// todo lo de premium +</p>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Múltiples perfiles (5 incluidos)
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Exportar datos a Excel
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Alertas cambios normativos
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            Soporte email (48h respuesta)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="font-mono text-xs text-slate-500 text-center mt-8">
+                // precios en USD · pagos con tarjeta (Stripe) o USDT (NOWPayments) · sin permanencia
+            </p>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Sobre el fundador (REDISEÑADO) -->
+    <section class="py-24 relative">
+        <div class="hero-glow glow-1" style="top: 50%; left: 30%;"></div>
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="font-mono text-xs text-indigo-400 mb-2">[ FOUNDER ]</p>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mb-4">Sobre el fundador</h2>
+            </div>
+
+            <div class="glass-card rounded-3xl p-8 md:p-12 fade-in">
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <!-- Avatar -->
+                    <div class="flex-shrink-0 mx-auto md:mx-0">
+                        <div class="avatar-grad w-32 h-32 rounded-2xl flex items-center justify-center text-white text-5xl font-display font-bold">
+                            AG
+                        </div>
+                    </div>
+
+                    <!-- Bio -->
+                    <div class="flex-1">
+                        <h3 class="font-display text-3xl font-bold text-white mb-1">Andrés Giraldo</h3>
+                        <p class="text-cyan-300 font-medium mb-4 font-mono text-sm">// Senior AI/Backend Engineer · MSc Data Analytics UNAL</p>
+
+                        <p class="text-slate-300 leading-relaxed mb-4">
+                            Más de <span class="text-white font-semibold">7 años</span> construyendo sistemas backend de producción con impacto en sectores de
+                            <span class="text-cyan-300">mercadeo</span>,
+                            <span class="text-cyan-300">finanzas</span> y
+                            <span class="text-cyan-300">retail</span>.
+                            Combinando analítica avanzada con ingeniería de software para resolver problemas que mezclan datos y dinero.
+                        </p>
+
+                        <p class="text-slate-400 leading-relaxed mb-6">
+                            Background híbrido: MSc Data Analytics (UNAL 2024), Esp. Financial Engineering (UNAL 2017), BA Economics (UdeA 2014).
+                            Donde otros ven datos, yo veo decisiones que se pueden automatizar.
+                        </p>
+
+                        <!-- Sectores chips -->
+                        <p class="font-mono text-xs text-slate-500 mb-3">[ SECTORES ]</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="sector-chip">
+                                <span class="w-2 h-2 bg-cyan-400 rounded-full"></span>
+                                Mercadeo
+                            </span>
+                            <span class="sector-chip">
+                                <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                                Finanzas
+                            </span>
+                            <span class="sector-chip">
+                                <span class="w-2 h-2 bg-purple-400 rounded-full"></span>
+                                Retail
+                            </span>
+                        </div>
+
+                        <!-- Credenciales -->
+                        <p class="font-mono text-xs text-slate-500 mb-3">[ CREDENCIALES ]</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                            <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-800">
+                                <p class="font-mono text-xs text-cyan-400 mb-1">2024</p>
+                                <p class="text-sm text-white font-medium">MSc Data Analytics</p>
+                                <p class="text-xs text-slate-500">UNAL</p>
+                            </div>
+                            <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-800">
+                                <p class="font-mono text-xs text-cyan-400 mb-1">2017</p>
+                                <p class="text-sm text-white font-medium">Esp. Financial Eng.</p>
+                                <p class="text-xs text-slate-500">UNAL</p>
+                            </div>
+                            <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-800">
+                                <p class="font-mono text-xs text-cyan-400 mb-1">2014</p>
+                                <p class="text-sm text-white font-medium">BA Economics</p>
+                                <p class="text-xs text-slate-500">UdeA</p>
+                            </div>
+                        </div>
+
+                        <!-- CTAs -->
+                        <p class="font-mono text-xs text-slate-500 mb-3">[ CONTACTO ]</p>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="https://www.linkedin.com/in/andgm" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm bg-blue-500/10 border border-blue-500/30 text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-500/20 hover:border-blue-500/60 transition">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                LinkedIn
+                            </a>
+                            <a href="https://github.com/AndresGM7" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm bg-slate-700/30 border border-slate-600/50 text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-700/50 hover:border-slate-500 transition">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                GitHub
+                            </a>
+                            <a href="mailto:andres@pension-calculator.co" class="inline-flex items-center gap-2 text-sm bg-slate-700/30 border border-slate-600/50 text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-700/50 hover:border-slate-500 transition">
+                                ✉️ Email
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Metodología -->
+    <section id="metodologia" class="py-24 relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="font-mono text-xs text-indigo-400 mb-2">[ METHODOLOGY ]</p>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mb-4">Nuestra metodología</h2>
+                <p class="text-slate-400 text-lg">Auditable. Trazable. Datos oficiales.</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-8 fade-in space-y-6">
+                <div>
+                    <h3 class="font-display font-bold mb-2 text-white text-lg flex items-center gap-2">
+                        <span class="font-mono text-cyan-400 text-sm">01</span>
+                        Marco legal colombiano
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Implementamos textualmente la Ley 100/1993, Ley 797/2003, Decreto 2392/2018, Decreto 59/2018, y la Carta Circular 39 de 2026 de la Superintendencia Financiera.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-display font-bold mb-2 text-white text-lg flex items-center gap-2">
+                        <span class="font-mono text-cyan-400 text-sm">02</span>
+                        Datos utilizados
+                    </h3>
+                    <ul class="text-sm text-slate-300 space-y-1 font-mono">
+                        <li>→ IPC mensual oficial: Banrep (1954 a Jun 2026)</li>
+                        <li>→ SMLMV histórico: Banrep (1984 a 2026)</li>
+                        <li>→ Rentabilidades por AFP: Carta Circular 39/2026 SuperFinanciera</li>
+                        <li>→ Expectativas de inflación: Banrep (encuesta mensual)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-display font-bold mb-2 text-white text-lg flex items-center gap-2">
+                        <span class="font-mono text-cyan-400 text-sm">03</span>
+                        Código abierto
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Auditable en <a href="https://github.com/AndresGM7/pension-calculator-col" class="text-cyan-400 hover:text-cyan-300 underline font-mono">github.com/AndresGM7/pension-calculator-col</a>.
+                        Cualquiera puede verificar los cálculos.
+                    </p>
+                </div>
+                <div class="bg-amber-500/10 border-l-2 border-amber-400 p-4 rounded">
+                    <p class="text-sm text-slate-200 leading-relaxed">
+                        <strong class="text-amber-400">⚠ Disclaimer legal:</strong>
+                        Esta es una herramienta de <strong>orientación educativa</strong>, no de asesoría financiera personalizada. Los cálculos son estimaciones basadas en datos históricos oficiales. Las pensiones reales dependen de variables no modeladas (reformas legales, comisión específica de tu AFP, decisiones personales de inversión). Para decisiones importantes, consulta con un asesor financiero certificado.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="relative py-20 overflow-hidden">
+        <div class="hero-glow glow-2" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+        <div class="relative max-w-3xl mx-auto px-4 text-center">
+            <h2 class="font-display text-4xl sm:text-5xl font-bold mb-4 text-white">
+                <span class="gradient-text">¿Listo para conocer</span>
+                <br>
+                tu pensión?
+            </h2>
+            <p class="text-xl mb-8 text-slate-300">Calcula gratis, sin registro. Toma 60 segundos.</p>
+            <a href="/calculadora" class="inline-block btn-glow text-white px-10 py-4 rounded-xl text-lg font-bold">
+                Calcular mi pensión ahora →
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#0a0e1a] border-t border-slate-800/50 py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="text-white font-display font-bold mb-3">Producto</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="/calculadora" class="hover:text-cyan-300 transition">Calculadora gratis</a></li>
+                        <li><a href="#pricing" class="hover:text-cyan-300 transition">Precios</a></li>
+                        <li><a href="https://pension-calc-co.fly.dev/docs" class="hover:text-cyan-300 transition">API</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-display font-bold mb-3">Recursos</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#metodologia" class="hover:text-cyan-300 transition">Metodología</a></li>
+                        <li><a href="https://github.com/AndresGM7/pension-calculator-col" class="hover:text-cyan-300 transition">Código fuente</a></li>
+                        <li><a href="https://github.com/AndresGM7/pension-calculator-col/blob/main/docs/" class="hover:text-cyan-300 transition">Documentación</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-display font-bold mb-3">Legal</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="/terminos" class="hover:text-cyan-300 transition">Términos</a></li>
+                        <li><a href="/privacidad" class="hover:text-cyan-300 transition">Privacidad</a></li>
+                        <li><a href="/disclaimer" class="hover:text-cyan-300 transition">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-display font-bold mb-3">Contacto</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="mailto:andres@pension-calculator.co" class="hover:text-cyan-300 transition">andres@pension-calculator.co</a></li>
+                        <li><a href="https://www.linkedin.com/in/andgm" class="hover:text-cyan-300 transition">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800/50 pt-8 text-sm">
+                <p class="font-mono text-center text-slate-500 mb-2">
+                    © 2026 pension-calculator.co · Hecho con rigor en Colombia
+                </p>
+                <p class="font-mono text-center text-xs text-slate-600 max-w-2xl mx-auto">
+                    // esta es una herramienta de orientación educativa, no de asesoría financiera personalizada //
+                    // los cálculos son estimaciones basadas en datos históricos oficiales //
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Pension Calculator Colombia",
+      "url": "https://pension-calculator-col.netlify.app",
+      "logo": "https://pension-calculator-col.netlify.app/logo.png",
+      "founder": {
+        "@type": "Person",
+        "name": "Andrés Giraldo",
+        "jobTitle": "Senior AI/Backend Engineer",
+        "url": "https://www.linkedin.com/in/andgm"
+      },
+      "sameAs": [
+        "https://github.com/AndresGM7/pension-calculator-col",
+        "https://www.linkedin.com/in/andgm"
+      ]
+    }
+    </script>
+
+    <!-- Scroll animations -->
+    <script>
+        // Intersection Observer for fade-in
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

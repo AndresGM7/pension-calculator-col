@@ -79,18 +79,30 @@
             -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black, transparent);
         }
 
-        /* CTA button */
+        /* CTA button - alto contraste, NO translucido */
         .btn-primary {
             position: relative;
-            background: linear-gradient(135deg, #4f46e5 0%, #0891b2 100%);
+            background: linear-gradient(135deg, #4338ca 0%, #1e40af 100%);
             color: white;
+            font-weight: 700;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 1px 2px rgba(79, 70, 229, 0.15), 0 4px 12px rgba(79, 70, 229, 0.2);
+            box-shadow:
+                0 1px 2px rgba(67, 56, 202, 0.3),
+                0 4px 8px rgba(67, 56, 202, 0.25),
+                0 8px 20px rgba(67, 56, 202, 0.15);
+            border: 1px solid rgba(67, 56, 202, 0.4);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(79, 70, 229, 0.2), 0 12px 24px rgba(79, 70, 229, 0.3);
+            box-shadow:
+                0 2px 4px rgba(67, 56, 202, 0.4),
+                0 8px 16px rgba(67, 56, 202, 0.35),
+                0 16px 32px rgba(67, 56, 202, 0.25);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
         }
 
         /* Card */
@@ -287,7 +299,7 @@
     </nav>
 
     <!-- Hero -->
-    <section class="relative pt-20 pb-24 overflow-hidden gradient-bg-soft grid-bg">
+    <section class="relative pt-20 pb-28 overflow-hidden bg-white grid-bg">
         <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div class="fade-in inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-white border border-indigo-200 shadow-sm">
                 <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -590,7 +602,8 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <p class="text-xs text-indigo-600 mb-2 font-medium tracking-wider uppercase">Sobre el fundador</p>
-                <h2 class="font-display text-4xl sm:text-5xl font-bold text-slate-900">Hecho por alguien que sabe</h2>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-slate-900">Hecho con curiosidad y rigor</h2>
+                <p class="text-slate-600 text-lg mt-3 max-w-2xl mx-auto">Soy economista y desarrollador. Me obsesionan los problemas donde los datos y el dinero se cruzan, y me gusta construir herramientas que aporten valor real a quien las usa.</p>
             </div>
 
             <div class="card rounded-3xl p-8 md:p-12 fade-in">
@@ -608,15 +621,17 @@
                         <p class="text-indigo-600 font-medium mb-4 text-sm">Senior AI/Backend Engineer · MSc Data Analytics UNAL</p>
 
                         <p class="text-slate-700 leading-relaxed mb-4">
-                            Más de <span class="font-bold text-slate-900">7 años</span> construyendo sistemas backend de producción con impacto real en sectores de
+                            Soy Andrés. Llevo <span class="font-bold text-slate-900">7+ años</span> combinando
+                            <span class="kw">economía</span> y
+                            <span class="kw">programación</span> en proyectos de
                             <span class="kw">mercadeo</span>,
                             <span class="kw">finanzas</span> y
                             <span class="kw">retail</span>.
-                            Donde otros ven datos, yo veo decisiones que se pueden automatizar.
+                            Esta calculadora es mi manera de aportar ese conocimiento al debate pensional colombiano.
                         </p>
 
                         <p class="text-slate-600 leading-relaxed mb-6 text-sm">
-                            Background híbrido: MSc Data Analytics (UNAL 2024), Esp. Financial Engineering (UNAL 2017), BA Economics (UdeA 2014).
+                            MSc Data Analytics (UNAL 2024) · Esp. Financial Engineering (UNAL 2017) · BA Economics (UdeA 2014).
                         </p>
 
                         <!-- Sectores chips -->
