@@ -1,0 +1,161 @@
+{
+  "fuente_principal": "Colfondos (https://www.colfondos.com.co/dxp/personas/pensiones-obligatorias/conoce-mas/cifras?tab=0) - Carta Circular No.39 del 08 de julio del 2026 de la Superintendencia Financiera de Colombia",
+  "fuente_secundaria": "SuperFinanciera Power BI (https://www.superfinanciera.gov.co/powerbi/reportes/523/505/) - Rentabilidad fondos de PO y CES diferentes periodos (foto de grafico Sep 2022-Sep 2026)",
+  "ultima_actualizacion": "2026-10-15",
+  "metodologia_referencia": "TIR (Tasa Interna de Retorno) calculada bajo metodologia de valor de unidad (NAV), segun Decreto 2392 de 2018. Para Skandia, marzo/95 a diciembre/20 (inicio operaciones fondo).",
+  "rentabilidades_acumuladas_efectivas_anuales_tir": {
+    "_nota": "Datos oficiales Carta Circular No.39 del 8 julio 2026. Rentabilidad minima obligatoria segun art 7 Decreto 59 de 2018.",
+    "_fuente": "Colfondos / Superintendencia Financiera",
+    "periodo_3y_jun2023_jun2026": {
+      "_descripcion": "30 de junio de 2023 al 30 de junio de 2026 (Fondo Conservador)",
+      "Colfondos": 0.1125,
+      "Porvenir": 0.1126,
+      "Skandia": 0.1088,
+      "Proteccion": 0.1104,
+      "promedio_ponderado": 0.1115,
+      "rentabilidad_minima_obligatoria": 0.0747
+    },
+    "periodo_5y_jun2021_jun2026": {
+      "_descripcion": "30 de junio de 2021 al 30 de junio de 2026 (Fondo Mayor Riesgo)",
+      "Colfondos": 0.1060,
+      "Porvenir": 0.1083,
+      "Skandia": 0.1083,
+      "Proteccion": 0.1090,
+      "promedio_ponderado": 0.1080,
+      "rentabilidad_minima_obligatoria": 0.0633
+    },
+    "periodo_10y_ene2016_ene2026": {
+      "_descripcion": "31 de enero de 2016 al 31 de enero de 2026 (Fondo Mayor Riesgo)",
+      "Colfondos": 0.1112,
+      "Porvenir": 0.1026,
+      "Skandia": 0.1045,
+      "Proteccion": 0.1024
+    },
+    "periodo_4y_moderado_jun2022_jun2026": {
+      "_descripcion": "30 de junio de 2022 al 30 de junio de 2026 (Fondo Moderado)",
+      "Colfondos": 0.1131,
+      "Porvenir": 0.1278,
+      "Skandia": 0.1194,
+      "Proteccion": 0.1177,
+      "promedio_ponderado": 0.1199,
+      "rentabilidad_minima_obligatoria": 0.0789
+    },
+    "periodo_4y_retiro_programado_jun2022_jun2026": {
+      "_descripcion": "30 de junio de 2022 al 30 de junio de 2026 (Fondo Especial de Retiro Programado)",
+      "Colfondos": 0.1131,
+      "Porvenir": 0.1214,
+      "Skandia": 0.1216,
+      "Proteccion": 0.1250,
+      "promedio_ponderado": 0.1206,
+      "rentabilidad_minima_obligatoria": 0.0759
+    },
+    "periodo_26y_1994_2020": {
+      "_descripcion": "Inicio de operaciones mayo de 1994 al 31 de marzo de 2020 (fondo moderado)",
+      "Colfondos": 0.1487,
+      "Porvenir": 0.1505,
+      "Skandia": 0.1574,
+      "Proteccion": 0.1576,
+      "promedio_ponderado": 0.1520
+    }
+  },
+  "rentabilidades_nominales_mensuales_promedio_por_anio": {
+    "_nota": "Datos extraídos de captura del grafico Power BI Sep 2022-Sep 2026. Rentabilidad nominal anualizada promedio por AFP y ano.",
+    "_fuente": "SuperFinanciera Power BI - reporte 523/505",
+    "2022": {
+      "Colfondos": 0.073,
+      "Porvenir": 0.077,
+      "Skandia": 0.075,
+      "Proteccion": 0.075,
+      "promedio": 0.075
+    },
+    "2023": {
+      "Colfondos": 0.070,
+      "Porvenir": 0.075,
+      "Skandia": 0.073,
+      "Proteccion": 0.073,
+      "promedio": 0.073
+    },
+    "2024": {
+      "Colfondos": 0.077,
+      "Porvenir": 0.085,
+      "Skandia": 0.080,
+      "Proteccion": 0.081,
+      "promedio": 0.081
+    },
+    "2025": {
+      "Colfondos": 0.077,
+      "Porvenir": 0.089,
+      "Skandia": 0.083,
+      "Proteccion": 0.084,
+      "promedio": 0.084
+    },
+    "2026_parcial_hasta_sep": {
+      "Colfondos": 0.091,
+      "Porvenir": 0.095,
+      "Skandia": 0.087,
+      "Proteccion": 0.088,
+      "promedio": 0.088
+    }
+  },
+  "rentabilidades_nominales_anuales_promedio": {
+    "_nota": "Promedios derivados de la tabla oficial Colfondos. Usados por el motor RAIS para proyectar.",
+    "_fuente": "Calculado a partir de Carta Circular 39/2026 SuperFinanciera",
+    "Porvenir": {
+      "Conservador": {"3y": 0.1126, "5y": 0.1083, "10y": 0.1026, "largo_plazo": 0.1505},
+      "Moderado": {"3y": 0.1278, "5y": 0.1278, "10y": 0.1278, "largo_plazo": 0.1505},
+      "Mayor_Riesgo": {"3y": 0.1083, "5y": 0.1083, "10y": 0.1083, "largo_plazo": 0.1505}
+    },
+    "Proteccion": {
+      "Conservador": {"3y": 0.1104, "5y": 0.1090, "10y": 0.1024, "largo_plazo": 0.1576},
+      "Moderado": {"3y": 0.1177, "5y": 0.1177, "10y": 0.1177, "largo_plazo": 0.1576},
+      "Mayor_Riesgo": {"3y": 0.1090, "5y": 0.1090, "10y": 0.1090, "largo_plazo": 0.1576}
+    },
+    "Skandia_Colfondos": {
+      "Conservador": {"3y": 0.1125, "5y": 0.1083, "10y": 0.1112, "largo_plazo": 0.1487},
+      "Moderado": {"3y": 0.1131, "5y": 0.1131, "10y": 0.1131, "largo_plazo": 0.1487},
+      "Mayor_Riesgo": {"3y": 0.1083, "5y": 0.1083, "10y": 0.1083, "largo_plazo": 0.1487}
+    },
+    "Old_Mutual": {
+      "_nota": "Datos no disponibles en Colfondos. Usar promedio del sector como aproximacion.",
+      "Conservador": {"3y": 0.1112, "5y": 0.1083, "10y": 0.1052, "largo_plazo": 0.1530},
+      "Moderado": {"3y": 0.1195, "5y": 0.1195, "10y": 0.1195, "largo_plazo": 0.1530},
+      "Mayor_Riesgo": {"3y": 0.1087, "5y": 0.1087, "10y": 0.1087, "largo_plazo": 0.1530}
+    }
+  },
+  "rentabilidades_reales_anuales_promedio": {
+    "_nota": "Rentabilidad nominal deflactada por IPC promedio del periodo. Aprox nominal menos IPC del periodo.",
+    "Porvenir": {
+      "Conservador": {"3y": 0.0626, "10y": 0.0526, "largo_plazo": 0.0805},
+      "Moderado": {"3y": 0.0778, "10y": 0.0778, "largo_plazo": 0.0805},
+      "Mayor_Riesgo": {"3y": 0.0583, "10y": 0.0583, "largo_plazo": 0.0805}
+    },
+    "Proteccion": {
+      "Conservador": {"3y": 0.0604, "10y": 0.0524, "largo_plazo": 0.0876},
+      "Moderado": {"3y": 0.0677, "10y": 0.0677, "largo_plazo": 0.0876},
+      "Mayor_Riesgo": {"3y": 0.0590, "10y": 0.0590, "largo_plazo": 0.0876}
+    },
+    "Skandia_Colfondos": {
+      "Conservador": {"3y": 0.0625, "10y": 0.0612, "largo_plazo": 0.0787},
+      "Moderado": {"3y": 0.0631, "10y": 0.0631, "largo_plazo": 0.0787},
+      "Mayor_Riesgo": {"3y": 0.0583, "10y": 0.0583, "largo_plazo": 0.0787}
+    }
+  },
+  "comisiones_por_afp": {
+    "_nota": "Comision de administracion sobre el salario. Porcentaje variable segun AFP.",
+    "Porvenir": 0.0150,
+    "Proteccion": 0.0140,
+    "Skandia_Colfondos": 0.0130,
+    "Old_Mutual": 0.0160
+  },
+  "tipo_cambio_usd_cop_referencia": 3850,
+  "fuentes_y_reproduccion": {
+    "colfondos_url": "https://www.colfondos.com.co/dxp/personas/pensiones-obligatorias/conoce-mas/cifras?tab=0",
+    "superfinanciera_url": "https://www.superfinanciera.gov.co/powerbi/reportes/523/505/",
+    "metodologia_url": "https://www.superfinanciera.gov.co/publicaciones/10115892/historico-rentabilidad-de-1994-hasta-agosto-2025/",
+    "carta_circular_39_2026": "Rentabilidad minima obligatoria segun Carta Circular No.39 del 08 de julio del 2026",
+    "decreto_2392_2018": "Decreto 2392 de 2018 - modifica metodologia calculo rentabilidad TIR por NAV a partir del 5 de marzo de 2019",
+    "decreto_59_2018": "Decreto 59 de 2018 - art 7 - primera revision rentabilidad minima a partir del 30 de junio de 2020, primera verificacion 30 de junio de 2021",
+    "decreto_2555_2010": "Decreto 2555 de 2010 (modificado por Decreto 59 de 2018)",
+    "disclaimer_legal": "Estas rentabilidades NO son indicativas de futuros resultados. Cualquier proyeccion esta sujeta a las condiciones del mercado y no constituye garantia."
+  }
+}

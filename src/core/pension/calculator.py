@@ -153,11 +153,40 @@ def calcular_pension(input_data: PensionInput) -> PensionResult:
         # Si no califica, mostrar tasa proyectada
         tasa = calc_tasa(max(input_data.semanas_cotizadas, SEMANAS_MINIMAS))
 
+    # 4.5. Aplicar tope legal al IBL: 25 SMLMV (Ley 797/2003 Art. 18)
+    smlmv_ref = SMLMV_HISTORICO.get(fecha_ref.year, 1_300_000)
+    tope_ibl = 25 * smlmv_ref
+    ibl_original = ibl
+    if ibl > tope_ibl:
+        ibl = tope_ibl
+        observaciones_temp = []
+    else:
+        observaciones_temp = []
+
     # 5. Calcular mesada
-    mesada = ibl * tasa
+    mesada_original = ibl * tasa
+    mesada = mesada_original
+
+    # 5.1. Aplicar piso legal: 1 SMLMV (Ley 797/2003 Art. 10)
+    # Solo si tiene derecho (cumple edad Y semanas)
+    piso_smlmv = smlmv_ref
+    piso_aplicado = False
+    if tiene_derecho and mesada < piso_smlmv and ibl_original > 0:
+        mesada = float(piso_smlmv)
+        piso_aplicado = True
 
     # 6. Generar observaciones
     observaciones = []
+    if ibl_original > tope_ibl:
+        observaciones.append(
+            f"IBL calculado (${ibl_original:,.0f}) superaba el tope legal de 25 SMLMV "
+            f"(${tope_ibl:,.0f}). Se ajusto al tope (Ley 797/2003 Art. 18)."
+        )
+    if piso_aplicado:
+        observaciones.append(
+            f"Mesada calculada (${mesada_original:,.0f}) inferior al piso legal de 1 SMLMV "
+            f"(${piso_smlmv:,.0f}). Se ajusto al piso (Ley 797/2003 Art. 10)."
+        )
     if not cumple_edad:
         observaciones.append(
             f"Edad actual: {edad} anos. Requiere {edad_req}. "
@@ -169,7 +198,7 @@ def calcular_pension(input_data: PensionInput) -> PensionResult:
             f"Minimo {SEMANAS_MINIMAS}. "
             f"Faltan {SEMANAS_MINIMAS - input_data.semanas_cotizadas}."
         )
-    if ibl == 0:
+    if ibl_original == 0:
         observaciones.append(
             "Sin periodos de cotizacion, el IBL es $0. "
             "Suba su historia laboral."

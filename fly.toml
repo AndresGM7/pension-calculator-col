@@ -1,0 +1,40 @@
+# fly.toml app configuration file generated for pension-calc-co on 2026-10-15T22:57:55-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'pension-calc-co'
+primary_region = 'gru'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[env]
+  API_HOST = '0.0.0.0'
+  API_PORT = '8000'
+  APP_ENV = 'production'
+  DEBUG = 'false'
+  LOG_LEVEL = 'WARNING'
+  PYTHONPATH = '/app'
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/health'
+    protocol = 'http'
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 512

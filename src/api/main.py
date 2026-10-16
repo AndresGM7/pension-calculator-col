@@ -7,12 +7,19 @@ from src.api.routes import pension
 
 settings = get_settings()
 
+# En produccion, ocultar Swagger/ReDoc/OpenAPI para no exponer el contrato
+# de la API a scrapers/competencia. En dev/staging mantenerlos.
+_docs_url = "/docs" if not settings.is_production else None
+_redoc_url = "/redoc" if not settings.is_production else None
+_openapi_url = "/openapi.json" if not settings.is_production else None
+
 app = FastAPI(
     title="Pension Calculator",
-    description="Colombian pension calculator microservice — Ley 100/1993 + Ley 797/2003",
+    description="Colombian pension calculator microservice. Ley 100/1993 + Ley 797/2003.",
     version="0.1.0",
-    docs_url="/docs",
-    redoc_url="/redoc",
+    docs_url=_docs_url,
+    redoc_url=_redoc_url,
+    openapi_url=_openapi_url,
 )
 
 # CORS

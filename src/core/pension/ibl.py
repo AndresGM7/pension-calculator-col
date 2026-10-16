@@ -69,12 +69,33 @@ def filtrar_periodos_recientes(
         return periodos
     
     fecha_inicio_ventana = fecha_referencia - timedelta(days=365 * anos_ventana)
-    
-    filtrados = [
-        p for p in periodos
-        if p.fecha_inicio >= fecha_inicio_ventana
-    ]
-    
+
+    # Recortar cada periodo a la ventana de tiempo (interseccion con ventana)
+    # Esto evita que periodos largos (ej: 1990-2025 con ventana 10y) se incluyan
+    # completos, sesgando el IBL hacia arriba. Solo la fraccion dentro de la
+    # ventana debe contar para el promedio.
+    filtrados = []
+    for p in periodos:
+        # Validar periodo: fechas validas y IBC positivo
+        if p.fecha_inicio > p.fecha_fin:
+            # Periodo invertido, lo saltamos silenciosamente
+            continue
+        if p.ibc <= 0:
+            # IBC cero o negativo (licencia no remunerada, error), excluir
+            continue
+
+        # Calcular interseccion con la ventana
+        inicio = max(p.fecha_inicio, fecha_inicio_ventana)
+        fin = min(p.fecha_fin, fecha_referencia)
+
+        # Si hay interseccion (el periodo cae al menos parcialmente en ventana)
+        if fin > inicio:
+            filtrados.append(PeriodoCotizacion(
+                fecha_inicio=inicio,
+                fecha_fin=fin,
+                ibc=p.ibc,
+            ))
+
     return filtrados
 
 

@@ -1,10 +1,21 @@
 """Pension calculation endpoints."""
 from datetime import date
+from typing import Literal
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Depends, status
 from pydantic import BaseModel, Field
 
-from src.api.schemas import PensionInputSchema, PensionResultSchema
+from src.api.dependencies import require_feature
+
+from src.api.schemas import (
+    ComparacionRegimenesSchema,
+    CompararEscenariosResponseSchema,
+    EscenarioRAISSchema,
+    PensionInputSchema,
+    PensionResultSchema,
+    ProyeccionCompletaSchema,
+    PuntoProyeccionSchema,
+)
 from src.core.pension.calculator import (
     EDAD_JUBILACION_HOMBRES,
     EDAD_JUBILACION_MUJERES,
@@ -14,6 +25,7 @@ from src.core.pension.calculator import (
     calcular_pension,
     obtener_edad_jubilacion,
 )
+from src.core.pension.comparacion import comparar_regimenes
 from src.core.pension.ibc import PeriodoCotizacion
 
 router = APIRouter()
@@ -26,7 +38,10 @@ router = APIRouter()
     summary="Calcular mesada pensional",
     description="Calcula la mesada pensional colombiana segun Ley 100/1993 o Ley 797/2003",
 )
-async def calcular_mesada(input_data: PensionInputSchema) -> PensionResultSchema:
+async def calcular_mesada(
+    input_data: PensionInputSchema,
+    _user_tier: str = Depends(require_feature("calcular_rpm")),
+) -> PensionResultSchema:
     """Calcula la pension de vejez de una persona."""
     periodos = [
         PeriodoCotizacion(
@@ -93,7 +108,10 @@ class ProyeccionResultadoSchema(BaseModel):
     summary="Proyectar cuando podra jubilarse",
     description="Calcula cuantos anos/semanas faltan para alcanzar el derecho a pension",
 )
-async def proyectar_jubilacion(input_data: ProyeccionInputSchema) -> ProyeccionResultadoSchema:
+async def proyectar_jubilacion(
+    input_data: ProyeccionInputSchema,
+    _user_tier: str = Depends(require_feature("calcular_rpm")),
+) -> ProyeccionResultadoSchema:
     """Proyecta el momento en que la persona podra jubilarse."""
     hoy = date.today()
     edad_actual = calcular_edad(input_data.fecha_nacimiento, hoy)
@@ -190,3 +208,183 @@ async def info_regimenes():
             "fuente": "Guia AMV Fondos de Pensiones Operador 2020",
         },
     }
+
+
+class ComparacionInputSchema(BaseModel):
+    """Input para comparación RPM vs RAIS."""
+    fecha_nacimiento: date
+    sexo: str = Field(pattern="^[MF]$")
+    semanas_cotizadas: int = Field(ge=0, le=10000)
+    periodos: list[dict] = Field(
+        default_factory=list,
+        description="Historia laboral con IBCs indexados",
+    )
+    regimen_rpm: Literal["LEY_100_1993", "LEY_797_2003"] = "LEY_797_2003"
+    comision_afp: float = Field(default=0.015, ge=0, le=0.10)
+    usar_ipc: bool = True
+
+
+@router.post(
+    "/comparar-regimenes",
+    response_model=ComparacionRegimenesSchema,
+    summary="Comparar RPM (Colpensiones) vs RAIS (AFPs privadas)",
+    description="Calcula y compara la pensión esperada en ambos regimenes bajo 3 escenarios de rentabilidad RAIS.",
+)
+async def comparar_regimenes_endpoint(
+    input_data: ComparacionInputSchema,
+    _user_tier: str = Depends(require_feature("comparar_regimenes")),
+) -> ComparacionRegimenesSchema:
+    """Compara pensión esperada en RPM vs RAIS.
+
+    Esta es la funcionalidad DIFERENCIADORA del producto. Permite al usuario
+    ver objetivamente cuál régimen le conviene más.
+    """
+    periodos_convertidos = []
+    for p in input_data.periodos:
+        periodos_convertidos.append(
+            PeriodoCotizacion(
+                fecha_inicio=p["fecha_inicio"] if isinstance(p["fecha_inicio"], date) else date.fromisoformat(p["fecha_inicio"]),
+                fecha_fin=p["fecha_fin"] if isinstance(p["fecha_fin"], date) else date.fromisoformat(p["fecha_fin"]),
+                ibc=float(p["ibc"]),
+            )
+        )
+
+    resultado = comparar_regimenes(
+        fecha_nacimiento=input_data.fecha_nacimiento,
+        sexo=input_data.sexo,
+        semanas_cotizadas=input_data.semanas_cotizadas,
+        periodos=periodos_convertidos,
+        regimen_rpm=input_data.regimen_rpm,
+        comision_afp=input_data.comision_afp,
+        usar_ipc=input_data.usar_ipc,
+    )
+
+    return ComparacionRegimenesSchema(
+        fecha_nacimiento=resultado.fecha_nacimiento,
+        sexo=resultado.sexo,
+        semanas_cotizadas=resultado.semanas_cotizadas,
+        edad_actual=resultado.edad_actual,
+        edad_jubilacion_rpm=resultado.edad_jubilacion_rpm,
+        edad_jubilacion_rais=resultado.edad_jubilacion_rais,
+        rpm_mesada=resultado.rpm_mesada,
+        rpm_ibl=resultado.rpm_ibl,
+        rpm_tasa=resultado.rpm_tasa,
+        rpm_tiene_derecho=resultado.rpm_tiene_derecho,
+        rais_mesada_vitalicia=resultado.rais_mesada_vitalicia,
+        rais_mesada_retiro_programado=resultado.rais_mesada_retiro_programado,
+        rais_saldo_final=resultado.rais_saldo_final,
+        rais_escenario_usado=resultado.rais_escenario_usado,
+        rais_escenarios=[EscenarioRAISSchema(**e) for e in resultado.rais_escenarios],
+        diferencia_mensual=resultado.diferencia_mensual,
+        diferencia_porcentual=resultado.diferencia_porcentual,
+        regimen_recomendado=resultado.regimen_recomendado,
+        ventajas_rpm=resultado.ventajas_rpm,
+        ventajas_rais=resultado.ventajas_rais,
+        observaciones=resultado.observaciones,
+    )
+
+
+class ProyeccionEndpointInputSchema(BaseModel):
+    fecha_nacimiento: date
+    sexo: str = Field(pattern="^[MF]$")
+    semanas_cotizadas: int = Field(ge=0, le=10000)
+    periodos: list[dict] = Field(default_factory=list)
+    escenario: Literal["Conservador", "Base", "Agresivo"] = "Base"
+    horizonte_anios: list[int] = Field(default_factory=lambda: [5, 10, 15, 20])
+    regimen_rpm: Literal["LEY_100_1993", "LEY_797_2003"] = "LEY_797_2003"
+    tipo_fondo_rais: Literal["Conservador", "Moderado", "Mayor_Riesgo"] = "Moderado"
+
+
+def _convertir_periodos(periodos_dicts: list[dict]) -> list[PeriodoCotizacion]:
+    periodos = []
+    for p in periodos_dicts:
+        periodos.append(
+            PeriodoCotizacion(
+                fecha_inicio=p["fecha_inicio"] if isinstance(p["fecha_inicio"], date) else date.fromisoformat(p["fecha_inicio"]),
+                fecha_fin=p["fecha_fin"] if isinstance(p["fecha_fin"], date) else date.fromisoformat(p["fecha_fin"]),
+                ibc=float(p["ibc"]),
+            )
+        )
+    return periodos
+
+
+@router.post(
+    "/proyeccion",
+    response_model=ProyeccionCompletaSchema,
+    summary="Proyectar pension a multiples horizontes (5, 10, 15, 20 anos)",
+    description="Calcula como evoluciona la pension esperada bajo un escenario macroeconomico especifico.",
+)
+async def proyeccion_endpoint(
+    input_data: ProyeccionEndpointInputSchema,
+    _user_tier: str = Depends(require_feature("proyeccion_5_10_15_20")),
+) -> ProyeccionCompletaSchema:
+    from src.core.pension.proyecciones import proyectar_pension as _proyectar
+
+    periodos = _convertir_periodos(input_data.periodos)
+
+    resultado = _proyectar(
+        fecha_nacimiento=input_data.fecha_nacimiento,
+        sexo=input_data.sexo,
+        semanas_cotizadas=input_data.semanas_cotizadas,
+        periodos=periodos,
+        escenario_nombre=input_data.escenario,
+        horizonte_anios=input_data.horizonte_anios,
+        regimen_rpm=input_data.regimen_rpm,
+        tipo_fondo_rais=input_data.tipo_fondo_rais,
+    )
+
+    return ProyeccionCompletaSchema(
+        fecha_calculo=resultado.fecha_calculo,
+        fecha_nacimiento=resultado.fecha_nacimiento,
+        sexo=resultado.sexo,
+        edad_actual=resultado.edad_actual,
+        semanas_cotizadas_actuales=resultado.semanas_cotizadas_actuales,
+        horizonte_anios=resultado.horizonte_anios,
+        escenario=resultado.escenario,
+        descripcion_escenario=resultado.descripcion_escenario,
+        puntos=[PuntoProyeccionSchema(**vars(p)) for p in resultado.puntos],
+    )
+
+
+@router.post(
+    "/comparar-escenarios",
+    response_model=CompararEscenariosResponseSchema,
+    summary="Comparar 3 escenarios macroeconomicos",
+    description="Proyecta la pension esperada bajo Conservador, Base y Agresivo.",
+)
+async def comparar_escenarios_endpoint(
+    input_data: ProyeccionEndpointInputSchema,
+    _user_tier: str = Depends(require_feature("comparar_3_escenarios")),
+) -> CompararEscenariosResponseSchema:
+    from src.core.pension.proyecciones import comparar_escenarios as _comparar
+
+    periodos = _convertir_periodos(input_data.periodos)
+
+    resultados = _comparar(
+        fecha_nacimiento=input_data.fecha_nacimiento,
+        sexo=input_data.sexo,
+        semanas_cotizadas=input_data.semanas_cotizadas,
+        periodos=periodos,
+        horizonte_anios=input_data.horizonte_anios,
+        regimen_rpm=input_data.regimen_rpm,
+        tipo_fondo_rais=input_data.tipo_fondo_rais,
+    )
+
+    return CompararEscenariosResponseSchema(
+        fecha_calculo=list(resultados.values())[0].fecha_calculo,
+        fecha_nacimiento=list(resultados.values())[0].fecha_nacimiento,
+        escenarios={
+            nombre: ProyeccionCompletaSchema(
+                fecha_calculo=r.fecha_calculo,
+                fecha_nacimiento=r.fecha_nacimiento,
+                sexo=r.sexo,
+                edad_actual=r.edad_actual,
+                semanas_cotizadas_actuales=r.semanas_cotizadas_actuales,
+                horizonte_anios=r.horizonte_anios,
+                escenario=r.escenario,
+                descripcion_escenario=r.descripcion_escenario,
+                puntos=[PuntoProyeccionSchema(**vars(p)) for p in r.puntos],
+            )
+            for nombre, r in resultados.items()
+        },
+    )

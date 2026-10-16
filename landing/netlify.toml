@@ -1,0 +1,44 @@
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Cache HTML for 1 hour (short for fresh content)
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# Cache assets longer
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirects para SEO
+[[redirects]]
+  from = "/api/*"
+  to = "https://pension-calc-co.fly.dev/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/calculadora"
+  to = "/calculadora.html"
+  status = 301
+
+[[redirects]]
+  from = "/pricing"
+  to = "/#pricing"
+  status = 301

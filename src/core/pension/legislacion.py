@@ -76,15 +76,40 @@ PARAMETROS_REGIMENES: dict[RegimenPension, ParametrosTasaReemplazo] = {
 def calcular_tasa_ley_100_1993(semanas: int) -> float:
     """Tasa de reemplazo segun Ley 100/1993 ORIGINAL Art. 34.
 
-    Formula: 65% a 1,000 semanas + 1.5% por cada 50 semanas adicionales.
-    Maximo: 80%.
+    Formula escalonada (Art. 34 original):
+    - 1,000 semanas: 65% del IBL
+    - 1,000-1,200 semanas: +2% del IBL cada 50 semanas adicionales
+    - 1,200-1,400 semanas: +3% del IBL cada 50 semanas adicionales
+    - Maximo legal: 85% del IBL
+
+    Ejemplos:
+    - 1,000 sem -> 65%
+    - 1,100 sem -> 65% + 2% = 67%
+    - 1,200 sem -> 65% + 4% = 69%
+    - 1,300 sem -> 69% + 6% = 75%
+    - 1,400 sem -> 75% + 12% = 85% (tope)
+    - 1,500 sem -> 85% (cap)
     """
     if semanas < 1000:
         return 0.0
-    base = 0.65
-    semanas_extra = max(0, semanas - 1000)
-    incremento = (semanas_extra // 50) * 0.015
-    return min(base + incremento, 0.80)
+
+    # Base: 65% a 1,000 semanas
+    tasa = 0.65
+
+    # Primer escalon: 1,000-1,200 semanas, +2% cada 50 sem
+    if semanas >= 1000:
+        semanas_primer_escalon = min(semanas, 1200) - 1000
+        incrementos_primer = max(0, semanas_primer_escalon // 50)
+        tasa += incrementos_primer * 0.02
+
+    # Segundo escalon: 1,200-1,400 semanas, +3% cada 50 sem
+    if semanas > 1200:
+        semanas_segundo_escalon = min(semanas, 1400) - 1200
+        incrementos_segundo = max(0, semanas_segundo_escalon // 50)
+        tasa += incrementos_segundo * 0.03
+
+    # Tope legal: 85% (Art. 34 Ley 100/1993)
+    return min(tasa, 0.85)
 
 
 # Salarios minimos legales vigentes (referencia historica)

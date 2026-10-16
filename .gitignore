@@ -51,6 +51,12 @@ __pycache__/
 .venv/
 venv/
 *.log
-data/IPC*.csv
-data/*.xlsx
+# Backup del CSV original con bug pre-mayo 1981 (NO commitear)
+data/IPC_original_backup.csv
+# Anexos pesados del IPC (no necesarios en runtime)
+data/ipc_jun2026.xlsx
+data/ipc_anexo_ultimo.xlsx
 reporte_francisco_oficial.html
+
+# Production secrets (generados para deploy)
+.env.production.local
