@@ -106,7 +106,7 @@ class ProyeccionResultadoSchema(BaseModel):
     "/proyectar",
     response_model=ProyeccionResultadoSchema,
     summary="Proyectar cuando podra jubilarse",
-    description="Calcula cuantos anos/semanas faltan para alcanzar el derecho a pension",
+    description="Calcula cuantos años/semanas faltan para alcanzar el derecho a pension",
 )
 async def proyectar_jubilacion(
     input_data: ProyeccionInputSchema,
@@ -152,14 +152,14 @@ async def proyectar_jubilacion(
     if semanas_faltantes > 0:
         recomendaciones.append(
             f"Necesita {semanas_faltantes} semanas mas "
-            f"(~{semanas_faltantes/50:.1f} anos cotizando)."
+            f"(~{semanas_faltantes/50:.1f} años cotizando)."
         )
         recomendaciones.append(
             "Cotizar de forma continua es la forma mas eficiente de sumar semanas."
         )
     if anos_por_edad > 0:
         recomendaciones.append(
-            f"Le faltan {anos_por_edad} anos para alcanzar la edad de jubilacion ({edad_req})."
+            f"Le faltan {años_por_edad} años para alcanzar la edad de jubilacion ({edad_req})."
         )
     if semanas_faltantes == 0 and anos_por_edad == 0:
         recomendaciones.append(
@@ -311,7 +311,7 @@ def _convertir_periodos(periodos_dicts: list[dict]) -> list[PeriodoCotizacion]:
 @router.post(
     "/proyeccion",
     response_model=ProyeccionCompletaSchema,
-    summary="Proyectar pension a multiples horizontes (5, 10, 15, 20 anos)",
+    summary="Proyectar pension a multiples horizontes (5, 10, 15, 20 años)",
     description="Calcula como evoluciona la pension esperada bajo un escenario macroeconomico especifico.",
 )
 async def proyeccion_endpoint(

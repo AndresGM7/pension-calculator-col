@@ -98,7 +98,7 @@ def nombre_ventana(semanas: int) -> str:
     ventana = ventana_por_semanas(semanas)
     if ventana is None:
         return "toda_vida_laboral"
-    return f"ultimos_{ventana}_anos"
+    return f"ultimos_{ventana}_años"
 
 
 def indexar_periodos(
@@ -189,8 +189,8 @@ def calcular_pension(input_data: PensionInput) -> PensionResult:
         )
     if not cumple_edad:
         observaciones.append(
-            f"Edad actual: {edad} anos. Requiere {edad_req}. "
-            f"Faltan {edad_req - edad} anos."
+            f"Edad actual: {edad} años. Requiere {edad_req}. "
+            f"Faltan {edad_req - edad} años."
         )
     if not cumple_semanas:
         observaciones.append(

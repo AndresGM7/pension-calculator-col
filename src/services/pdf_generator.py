@@ -98,11 +98,11 @@ HTML_TEMPLATE = """
         </tr>
         <tr>
             <td>Edad actual</td>
-            <td>{{ resultado.edad_actual }} anos</td>
+            <td>{{ resultado.edad_actual }} años</td>
         </tr>
         <tr>
             <td>Edad de jubilacion</td>
-            <td>{{ resultado.edad_jubilacion }} anos</td>
+            <td>{{ resultado.edad_jubilacion }} años</td>
         </tr>
         <tr>
             <td>Semanas cotizadas</td>
@@ -152,7 +152,7 @@ HTML_TEMPLATE = """
 
     <h2>Marco Legal Aplicado</h2>
     <p>Este calculo se realiza segun la Ley 797 de 2003, que modifica el Articulo 34 de la Ley 100 de 1993.</p>
-    <p>Requisitos: 1,300 semanas cotizadas (minimo), 62 anos (hombres) o 57 anos (mujeres).</p>
+    <p>Requisitos: 1,300 semanas cotizadas (minimo), 62 años (hombres) o 57 años (mujeres).</p>
     <p>Tasa de reemplazo: 40%% a 80%% del IBL segun la tabla oficial de tramos.</p>
 
     <div class="footer">

@@ -94,7 +94,7 @@ class PensionResultSchema(BaseModel):
         "edad_actual": 62,
         "edad_jubilacion": 62,
         "ibl_calculado": 250000,
-        "ventana_utilizada": "ultimos_10_anos",
+        "ventana_utilizada": "ultimos_10_años",
         "tasa_reemplazo": 0.68,
         "mesada_pensional": 170000,
         "regimen_aplicable": "LEY_797_2003",

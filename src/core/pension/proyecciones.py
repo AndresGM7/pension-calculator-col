@@ -1,7 +1,7 @@
-"""Motor de proyecciones a 5-10-15-20 anos bajo multiples escenarios.
+"""Motor de proyecciones a 5-10-15-20 años bajo multiples escenarios.
 
 Para una persona en cualquier momento de su vida laboral, este modulo proyecta:
-- Cuanto habra cotizado a 5, 10, 15, 20 anos
+- Cuanto habra cotizado a 5, 10, 15, 20 años
 - Cuanta pension esperaria bajo RPM (IBL proyectado con IBC futuro estimado)
 - Cuanta pension esperaria bajo RAIS (saldo acumulado proyectado)
 - En 3 escenarios: Conservador, Base, Agresivo
@@ -122,7 +122,7 @@ def _proyectar_periodos(
     Args:
         periodos: Periodos historicos (para inferir patron temporal)
         fecha_inicio: Fecha actual
-        fecha_fin: Fecha de proyeccion (ej. 5 anos despues)
+        fecha_fin: Fecha de proyeccion (ej. 5 años despues)
         ibc_crecimiento_anual: % de crecimiento anual del IBC (real o nominal)
 
     Returns:
@@ -182,7 +182,7 @@ def _proyectar_periodos(
 
 
 def calcular_edad_simple(fecha_nacimiento: date, referencia: date) -> int:
-    """Calcula edad en anos cumplidos."""
+    """Calcula edad en años cumplidos."""
     edad = referencia.year - fecha_nacimiento.year
     if (referencia.month, referencia.day) < (fecha_nacimiento.month, fecha_nacimiento.day):
         edad -= 1
@@ -277,7 +277,7 @@ def proyectar_pension(
                     mesada_rais_vitalicia=0.0,
                     mesada_rais_retiro_programado=0.0,
                     notas=[
-                        f"Ya tienes {edad_actual} anos (edad jubilacion = {edad_jubilacion_referencia}).",
+                        f"Ya tienes {edad_actual} años (edad jubilacion = {edad_jubilacion_referencia}).",
                         "Las proyecciones a futuro no aplican porque ya no cotizas.",
                         "Los valores mostrados son tu pension estimada HOY.",
                     ],

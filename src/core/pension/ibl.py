@@ -55,7 +55,7 @@ def filtrar_periodos_recientes(
     
     Args:
         periodos: lista completa de periodos de cotización
-        anos_ventana: cantidad de años hacia atrás (None = todos)
+        años_ventana: cantidad de años hacia atrás (None = todos)
         fecha_referencia: desde qué fecha contar hacia atrás (default: hoy)
     
     Returns:
