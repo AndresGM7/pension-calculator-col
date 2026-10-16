@@ -79,30 +79,36 @@
             -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black, transparent);
         }
 
-        /* CTA button - alto contraste, NO translucido */
+        /* CTA button - SOLIDO, alto contraste */
         .btn-primary {
             position: relative;
-            background: linear-gradient(135deg, #4338ca 0%, #1e40af 100%);
-            color: white;
+            background-color: #4338ca !important;
+            background-image: linear-gradient(135deg, #4338ca 0%, #3730a3 100%) !important;
+            color: #ffffff !important;
             font-weight: 700;
+            opacity: 1 !important;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow:
-                0 1px 2px rgba(67, 56, 202, 0.3),
-                0 4px 8px rgba(67, 56, 202, 0.25),
-                0 8px 20px rgba(67, 56, 202, 0.15);
-            border: 1px solid rgba(67, 56, 202, 0.4);
+                0 2px 4px rgba(67, 56, 202, 0.4),
+                0 6px 12px rgba(67, 56, 202, 0.3),
+                0 12px 24px rgba(67, 56, 202, 0.2);
+            border: 2px solid #3730a3;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
+            background-image: linear-gradient(135deg, #3730a3 0%, #312e81 100%) !important;
             box-shadow:
-                0 2px 4px rgba(67, 56, 202, 0.4),
-                0 8px 16px rgba(67, 56, 202, 0.35),
-                0 16px 32px rgba(67, 56, 202, 0.25);
+                0 4px 8px rgba(67, 56, 202, 0.5),
+                0 12px 24px rgba(67, 56, 202, 0.4),
+                0 20px 40px rgba(67, 56, 202, 0.3);
         }
 
         .btn-primary:active {
             transform: translateY(0);
+            box-shadow:
+                0 1px 2px rgba(67, 56, 202, 0.4),
+                0 4px 8px rgba(67, 56, 202, 0.3);
         }
 
         /* Card */
@@ -299,7 +305,7 @@
     </nav>
 
     <!-- Hero -->
-    <section class="relative pt-20 pb-28 overflow-hidden bg-white grid-bg">
+    <section class="relative pt-20 pb-28 overflow-hidden bg-white">
         <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div class="fade-in inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-white border border-indigo-200 shadow-sm">
                 <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -621,9 +627,8 @@
                         <p class="text-indigo-600 font-medium mb-4 text-sm">Senior AI/Backend Engineer · MSc Data Analytics UNAL</p>
 
                         <p class="text-slate-700 leading-relaxed mb-4">
-                            Soy Andrés. Llevo <span class="font-bold text-slate-900">7+ años</span> combinando
-                            <span class="kw">economía</span> y
-                            <span class="kw">programación</span> en proyectos de
+                            Soy Andrés. <span class="font-semibold text-slate-900">Demasiado economista para ser solo dev, demasiado dev para ser solo economista.</span>
+                            Llevo <span class="font-bold text-slate-900">7+ años</span> mezclando ambos mundos en proyectos de
                             <span class="kw">mercadeo</span>,
                             <span class="kw">finanzas</span> y
                             <span class="kw">retail</span>.
@@ -716,17 +721,17 @@
                     <span class="text-xs font-mono text-indigo-600 font-bold uppercase tracking-wider">ko-fi.com/andresgiraldo →</span>
                 </a>
 
-                <!-- USDT (TRC20) -->
-                <a href="https://t.me/andresgiraldo" target="_blank" rel="noopener" class="card rounded-2xl p-6 text-center transition group">
+                <!-- USDT (TRC20) - Wallet real con boton copiar -->
+                <button type="button" id="copy-wallet-btn" data-wallet="TNQUSTXGDgwEGLRp8HNmAkR8ahpGUraDjA" class="card rounded-2xl p-6 text-center transition group w-full">
                     <div class="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center bg-gradient-to-br from-cyan-100 to-purple-100 group-hover:from-cyan-200 group-hover:to-purple-200 transition">
                         <svg class="w-9 h-9 text-cyan-600" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
                         </svg>
                     </div>
                     <h3 class="font-display text-xl font-bold text-slate-900 mb-1">USDT (TRC20)</h3>
-                    <p class="text-slate-700 text-sm mb-3">Para Argentina, Venezuela o LATAM · Sin banco, sin comisiones</p>
-                    <span class="text-xs font-mono text-cyan-600 font-bold uppercase tracking-wider">Pedir wallet por Telegram →</span>
-                </a>
+                    <p class="text-slate-700 text-sm mb-3">Click para copiar · Red Tron (TRC20) · Sin banco, sin comisiones</p>
+                    <span id="copy-wallet-label" class="text-xs font-mono text-cyan-600 font-bold uppercase tracking-wider break-all">TNQUSTXGDgwEGLRp8HNmAkR8ahpGUraDjA →</span>
+                </button>
             </div>
 
             <div class="mt-10 text-center max-w-2xl mx-auto">
@@ -901,6 +906,35 @@
                 }
             });
         });
+
+        // Copy USDT wallet to clipboard
+        const copyBtn = document.getElementById('copy-wallet-btn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', async function() {
+                const wallet = this.dataset.wallet;
+                const label = document.getElementById('copy-wallet-label');
+                try {
+                    await navigator.clipboard.writeText(wallet);
+                    const original = label.textContent;
+                    label.textContent = 'COPIADO! Pegalo en tu wallet';
+                    label.classList.remove('text-cyan-600');
+                    label.classList.add('text-emerald-600');
+                    setTimeout(() => {
+                        label.textContent = original;
+                        label.classList.add('text-cyan-600');
+                        label.classList.remove('text-emerald-600');
+                    }, 2500);
+                } catch (err) {
+                    const ta = document.createElement('textarea');
+                    ta.value = wallet;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    alert('Wallet copiada: ' + wallet);
+                }
+            });
+        }
     </script>
 </body>
 </html>
