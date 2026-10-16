@@ -298,19 +298,33 @@
                 });
 
                 if (!response.ok) {
-                    let errMsg = 'Error al calcular';
+                    let errMsg = `Error ${response.status} al calcular`;
                     try {
                         const err = await response.json();
-                        errMsg = err.detail?.message || err.detail || errMsg;
-                    } catch {}
+                        // FastAPI devuelve detail como string o array
+                        if (typeof err.detail === 'string') {
+                            errMsg = err.detail;
+                        } else if (Array.isArray(err.detail)) {
+                            errMsg = err.detail.map(e => `${e.loc?.join('.') || ''}: ${e.msg}`).join('; ');
+                        } else if (err.detail?.message) {
+                            errMsg = err.detail.message;
+                        }
+                    } catch (parseErr) {
+                        errMsg = `Error ${response.status}: ${response.statusText}`;
+                    }
                     throw new Error(errMsg);
                 }
 
                 const result = await response.json();
                 showResult(result);
             } catch (err) {
-                console.error('Error:', err);
-                showError(err.message);
+                console.error('Error completo:', err);
+                let userMsg = err.message;
+                // Si es error de red (CORS, offline, etc)
+                if (err.message === 'Failed to fetch') {
+                    userMsg = 'No se pudo conectar al servidor. Verifica tu conexion a internet o intenta de nuevo en unos segundos.';
+                }
+                showError(userMsg);
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = originalText;
