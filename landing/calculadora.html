@@ -290,18 +290,29 @@
                 periodos: periodosFinales
             };
 
+            // Diagnostico: test rapido primero
+            console.log('[PensionCalc] Iniciando calculo...');
+            console.log('[PensionCalc] API URL:', API_URL);
+            console.log('[PensionCalc] Input:', inputData);
+
             try {
                 const response = await fetch(`${API_URL}/calcular`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    credentials: 'omit',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify(inputData),
                 });
+
+                console.log('[PensionCalc] Response status:', response.status);
 
                 if (!response.ok) {
                     let errMsg = `Error ${response.status} al calcular`;
                     try {
                         const err = await response.json();
-                        // FastAPI devuelve detail como string o array
                         if (typeof err.detail === 'string') {
                             errMsg = err.detail;
                         } else if (Array.isArray(err.detail)) {
@@ -316,13 +327,14 @@
                 }
 
                 const result = await response.json();
+                console.log('[PensionCalc] Resultado:', result);
                 showResult(result);
             } catch (err) {
-                console.error('Error completo:', err);
+                console.error('[PensionCalc] Error completo:', err);
+                console.error('[PensionCalc] Stack:', err.stack);
                 let userMsg = err.message;
-                // Si es error de red (CORS, offline, etc)
-                if (err.message === 'Failed to fetch') {
-                    userMsg = 'No se pudo conectar al servidor. Verifica tu conexion a internet o intenta de nuevo en unos segundos.';
+                if (err.message === 'Failed to fetch' || err.name === 'TypeError') {
+                    userMsg = 'No se pudo conectar al servidor (' + API_URL + ').\n\nPosibles causas:\n- Tu antivirus o firewall esta bloqueando la conexion\n- Tu VPN/proxy esta interfiriendo\n- El servidor esta temporalmente caido\n\nIntenta:\n1. Desactivar VPN si tienes una activa\n2. Probar con otra red (ej: datos del celular)\n3. Abrir https://pension-calc-co.fly.dev/health en otra pestana para confirmar que el server responde';
                 }
                 showError(userMsg);
             } finally {
